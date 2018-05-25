@@ -1,6 +1,10 @@
+# Files without extension
 *
 !/**/
 !*.*
+
+# Extensions for testing
+*.rgraph
 
 # Prerequisites
 *.d

@@ -1,0 +1,31 @@
+Format of the graph
+First Line:
+Number of vertices (N)
+
+Following N lines:
+One line for each vertice v
+Line contains vertices u, such that exists Edge(v,u)
+
+Ps.: vertice ids start from 0
+
+Examples:
+From geeksforgeeks:
+5
+3 2
+0
+1
+4
+Link: https://www.geeksforgeeks.org/wp-content/uploads/SCC.png
+
+From project description:
+9
+1
+2 4
+1 3 0 4
+
+5
+
+1
+
+7 4
+
