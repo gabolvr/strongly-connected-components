@@ -8,35 +8,37 @@
 
 using namespace std;
 
-void explore_rec(int current, stack<int>* explored, bool* visited, list<int>* neighbors){
+void explore_rec(int current, stack<int>* explored, bool* visited, list<int>* neighbors, list<int>* reach){
     visited[current] = true;
     for (list<int>::iterator i = neighbors[current].begin(); i != neighbors[current].end(); ++i){
         if(!visited[*i]){
-            cout << "\t" << *i << endl;
-            explore_rec(*i,  explored, visited, neighbors);
+            explore_rec(*i,  explored, visited, neighbors, reach);
+            reach->push_front(*i);
         }//was not explored
     }
 
     explored->push(current);
+    return;
 }
 
-void explore(stack<int>* order, stack<int>* explored, bool* visited, list<int>* neighbors){
+//this will return the components of the graph
+list< list<int> > explore(stack<int>* order, stack<int>* explored, bool* visited, list<int>* neighbors){
+    list< list<int> > components;
+    list<int>* reachable;
     int curr;
     while(!order->empty()) {
         curr = order->top();
         order->pop();
         if(!visited[curr]){
-            cout << curr << endl;
-            explore_rec(curr, explored, visited, neighbors);
+            reachable = new list<int>();
+            explore_rec(curr, explored, visited, neighbors, reachable);
+            reachable->push_front(curr);
+            components.push_front(*reachable);
         }
     }
+    return components;
 }
 
-// void find_SCC(istream input, ostream output){
-//     istream input;
-//     input.open(filename);
-
-// }
 
 list<int>* read_edges(int n_vertices, istream& in){
     list<int>* neighbors = new list<int>[n_vertices];
@@ -75,17 +77,6 @@ int main(int argc, char const *argv[]){
 
     bool* visited = new bool[n_vertices];
 
-    // int dest;
-    // string line;
-    // for(unsigned i = 0; i < n_vertices; ++i) {
-    //     getline(cin, line);
-    //     stringstream estream(line);
-    //     while(estream >> dest){
-    //         neighbors[i].push_front(dest);
-    //         neighbors_rev[dest].push_front(i);
-    //     }
-    // }
-
     for(unsigned i = 0; i < n_vertices; ++i) {
         order.push(n_vertices-i-1);
     }
@@ -96,7 +87,14 @@ int main(int argc, char const *argv[]){
         visited[i] = false;
     }
 
-    explore(&explored, &order, visited, neighbors_rev);
+    list<list<int> > scc = explore(&explored, &order, visited, neighbors_rev);
+
+    for (std::list<list<int> >::iterator i = scc.begin(); i != scc.end(); ++i){
+        for (std::list<int>::iterator j = i->begin(); j != i->end(); ++j){
+            cout << *j << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }
