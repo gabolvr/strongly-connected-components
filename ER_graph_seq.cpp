@@ -7,9 +7,6 @@
 
 using namespace std;
 
-const string EXTENSION =
-    ".rgraph";  // extension for random graph, used by sanitizer
-
 // create a erdos-renyi graph with n_vertices and probability for an edge = p
 list<int>* ER_graph(double p, int n_vertices) {
   list<int>* edges = new list<int>[n_vertices];
