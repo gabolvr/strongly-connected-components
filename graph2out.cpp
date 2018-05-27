@@ -23,7 +23,7 @@ void graph2out::write_graph(list<int>* edges, int n_vertices) {
 
 // if you want to output the graph to a file use this
 graph2out::graph2out(string out_base_name) {
-  ofstream* fout = new ofstream(out_base_name + EXTENSION);
+  ofstream* fout = new ofstream((out_base_name + EXTENSION).c_str());
   out_text = fout;
 }
 
