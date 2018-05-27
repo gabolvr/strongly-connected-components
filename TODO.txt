@@ -1,0 +1,3 @@
+- makefile for MPI
+- read input from real_data stuff
+- parallel strongly-connected-components
