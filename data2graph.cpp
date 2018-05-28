@@ -15,7 +15,9 @@ int data2graph::get_n() { return n_vertices; }
 
 vector<vector<int> > data2graph::get_edges() { return this->edges; }
 
-vector<string> data2graph::get_node() { return this->complexId; }
+vector<string>* data2graph::get_nodes() {
+  return new vector<string>(this->complexId);
+}
 
 data2graph::data2graph(string filename) {
   ifstream raw_data;
@@ -44,6 +46,6 @@ data2graph::data2graph(string filename) {
     edges[simpleId[oriID]].push_back(simpleId[destID]);
   }
 
-  this->n_vertices = complexId.size();
+  this->n_vertices = counter;
   raw_data.close();
 }
