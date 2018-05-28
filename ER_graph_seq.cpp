@@ -1,20 +1,20 @@
 #include <fstream>
 #include <iostream>
-#include <list>
 #include <random>
 #include <string>
+#include <vector>
 #include "graph2out.hpp"
 
 using namespace std;
 
 // create a erdos-renyi graph with n_vertices and probability for an edge = p
-list<int>* ER_graph(double p, int n_vertices) {
-  list<int>* edges = new list<int>[n_vertices];
+vector<vector<int> > ER_graph(double p, int n_vertices) {
+  vector<vector<int> > edges(n_vertices);
   double r;
   for (unsigned i = 0; i < n_vertices; ++i) {
     for (unsigned j = 0; j < n_vertices; ++j) {
       r = double(rand()) / RAND_MAX;
-      if (r < p && i != j) edges[i].push_front(j);
+      if (r < p && i != j) edges[i].push_back(j);
     }
   }
   return edges;
@@ -30,7 +30,7 @@ int main(int argc, char const* argv[]) {
   cin.ignore();  // takes the trailing \n
 
   srand(time(0));  // really random
-  list<int>* edges = ER_graph(p, n_vertices);
+  vector<vector<int> > edges = ER_graph(p, n_vertices);
 
   // user chooses where to output the graph, true says to print the message
   graph2out::output_graph(edges, n_vertices, true);

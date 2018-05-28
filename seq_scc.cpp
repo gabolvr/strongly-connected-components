@@ -10,9 +10,9 @@ using namespace std;
 
 // in reach are the nodes reachable by dfs from this node
 void explore_rec(int current, stack<int>* explored, bool* visited,
-                 list<int>* neighbors, list<int>* reach) {
+                 vector<vector<int> > neighbors, list<int>* reach) {
   visited[current] = true;
-  for (list<int>::iterator i = neighbors[current].begin();
+  for (vector<int>::iterator i = neighbors[current].begin();
        i != neighbors[current].end(); ++i) {
     if (!visited[*i]) {
       explore_rec(*i, explored, visited, neighbors, reach);
@@ -26,7 +26,7 @@ void explore_rec(int current, stack<int>* explored, bool* visited,
 
 // this will return the components of the graph
 list<list<int> > explore(stack<int>* order, stack<int>* explored, bool* visited,
-                         list<int>* neighbors) {
+                         vector<vector<int> > neighbors) {
   list<list<int> > components;
   list<int>* reachable;
   int curr;
@@ -43,8 +43,8 @@ list<list<int> > explore(stack<int>* order, stack<int>* explored, bool* visited,
   return components;
 }
 
-list<int>* read_edges(int n_vertices, istream& in) {
-  list<int>* neighbors = new list<int>[n_vertices];
+vector<vector<int> > read_edges(int n_vertices, istream& in) {
+  vector<vector<int> > neighbors(n_vertices);
 
   int dest;
   string line;
@@ -52,18 +52,18 @@ list<int>* read_edges(int n_vertices, istream& in) {
     getline(in, line);
     stringstream estream(line);
     while (estream >> dest) {
-      neighbors[i].push_front(dest);
+      neighbors[i].push_back(dest);
     }
   }
   return neighbors;
 }
 
-list<int>* rev_edges(int n_vertices, list<int>* neighbors) {
-  list<int>* neighbors_rev = new list<int>[n_vertices];
+vector<vector<int> > rev_edges(int n_vertices, vector<vector<int> > neighbors) {
+  vector<vector<int> > neighbors_rev(n_vertices);
   for (unsigned i = 0; i < n_vertices; ++i) {
-    for (list<int>::iterator j = neighbors[i].begin(); j != neighbors[i].end();
-         ++j) {
-      neighbors_rev[*j].push_front(i);
+    for (vector<int>::iterator j = neighbors[i].begin();
+         j != neighbors[i].end(); ++j) {
+      neighbors_rev[*j].push_back(i);
     }
   }
   return neighbors_rev;
@@ -73,8 +73,8 @@ int main(int argc, char const* argv[]) {
   int n_vertices;
   cin >> n_vertices >> std::ws;
 
-  list<int>* neighbors = read_edges(n_vertices, cin);
-  list<int>* neighbors_rev = rev_edges(n_vertices, neighbors);
+  vector<vector<int> > neighbors = read_edges(n_vertices, cin);
+  vector<vector<int> > neighbors_rev = rev_edges(n_vertices, neighbors);
 
   stack<int> explored;
   stack<int> order;

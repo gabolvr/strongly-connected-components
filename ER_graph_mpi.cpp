@@ -1,8 +1,8 @@
 #include <fstream>
 #include <iostream>
-#include <list>
 #include <random>
 #include <string>
+#include <vector>
 #include "graph2out.hpp"
 #include "mpi.h"
 
@@ -23,7 +23,7 @@ int* ER_graph(double p, int n_vertices, int start_v, int end_v) {
 // we generate rounded_up n_vertices and then
 // pick only the amount we need, so we don`t have problems
 // partitioning
-list<int>* ER_graph_mpi(int n_vertices, double p) {
+vector<vector<int> > ER_graph_mpi(int n_vertices, double p) {
   int num_tasks, task_id;
   MPI_Comm_rank(MPI_COMM_WORLD, &task_id);
   MPI_Comm_size(MPI_COMM_WORLD, &num_tasks);
@@ -47,12 +47,12 @@ list<int>* ER_graph_mpi(int n_vertices, double p) {
              (size_partit)*n_vertices, MPI_INT, 0, MPI_COMM_WORLD);
 
   // we turn the binary information into a list of edges
-  list<int>* edges = nullptr;
+  vector<vector<int> > edges;
   if (task_id == 0) {
-    edges = new list<int>[n_vertices];
     for (unsigned i = 0; i < n_vertices; ++i) {
+      edges.push_back(new vector<int>);
       for (unsigned j = 0; j < n_vertices; ++j) {
-        if (edges_final[i * n_vertices + j] == 1) edges[i].push_front(j);
+        if (edges_final[i * n_vertices + j] == 1) edges[i].push_back(j);
       }
     }
   }
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
   const string filename = argv[3];
   srand(time(0));  // really random
 
-  list<int>* edges = ER_graph_mpi(n_vertices, p);
+  vector<vector<int> > edges = ER_graph_mpi(n_vertices, p);
   if (task_id == 0) {
     graph2out gen_g(filename);
     gen_g.write_graph(edges, n_vertices);

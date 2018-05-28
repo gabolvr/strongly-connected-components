@@ -1,18 +1,18 @@
 #include "graph2out.hpp"
 #include <fstream>
 #include <iostream>
-#include <list>
 #include <string>
+#include <vector>
 
 using namespace std;
 
 const std::string EXTENSION = ".rgraph";
 // general function that picks a graph and writes it, in the format
 // "format_graph.txt", in the stream
-void graph2out::write_graph(list<int>* edges, int n_vertices) {
+void graph2out::write_graph(vector<vector<int> > edges, int n_vertices) {
   (*out_text) << n_vertices << endl;
   for (unsigned vert = 0; vert < n_vertices; ++vert) {
-    for (list<int>::iterator dest = edges[vert].begin();
+    for (vector<int>::iterator dest = edges[vert].begin();
          dest != edges[vert].end(); ++dest) {
       (*out_text) << (*dest) << " ";  // problem, last one has a space
     }
@@ -37,7 +37,7 @@ graph2out::~graph2out() {
   }
 }
 
-void graph2out::output_graph(list<int>* edges, int n_vertices,
+void graph2out::output_graph(vector<vector<int> > edges, int n_vertices,
                              bool should_print) {
   if (should_print)
     cout
