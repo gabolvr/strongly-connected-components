@@ -1,12 +1,9 @@
 #include "graph2out.hpp"
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
+#include "translator.hpp"
 
 using namespace std;
 
-const std::string EXTENSION = ".rgraph";
+const string graph2out::EXTENSION = ".rgraph";
 // general function that picks a graph and writes it, in the format
 // "format_graph.txt", in the stream
 void graph2out::write_graph(vector<vector<int> > edges, int n_vertices) {
@@ -14,11 +11,19 @@ void graph2out::write_graph(vector<vector<int> > edges, int n_vertices) {
   for (unsigned vert = 0; vert < n_vertices; ++vert) {
     for (vector<int>::iterator dest = edges[vert].begin();
          dest != edges[vert].end(); ++dest) {
-      (*out_text) << (*dest) << " ";  // problem, last one has a space
+      (*out_text) << *dest << " ";
     }
     (*out_text) << endl;
   }
   return;
+}
+
+static void ID2node(vector<string> dict, string dictfilename) {
+  ofstream* fout = new ofstream(dictfilename);
+  for (std::vector<string>::iterator i = dict.begin(); i != dict.end(); ++i) {
+    (*fout) << (*i) << endl;
+  }
+  fout->close();
 }
 
 // if you want to output the graph to a file use this

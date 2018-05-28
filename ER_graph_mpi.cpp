@@ -50,7 +50,7 @@ vector<vector<int> > ER_graph_mpi(int n_vertices, double p) {
   vector<vector<int> > edges;
   if (task_id == 0) {
     for (unsigned i = 0; i < n_vertices; ++i) {
-      edges.push_back(new vector<int>);
+      edges.push_back(vector<int>());
       for (unsigned j = 0; j < n_vertices; ++j) {
         if (edges_final[i * n_vertices + j] == 1) edges[i].push_back(j);
       }
@@ -77,12 +77,15 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  const int n_vertices = stoi(argv[1]);
+  int n_vertices = stoi(argv[1]);
   const double p = stod(argv[2]);
   const string filename = argv[3];
   srand(time(0));  // really random
 
+  // creates graph
   vector<vector<int> > edges = ER_graph_mpi(n_vertices, p);
+
+  // write to filename
   if (task_id == 0) {
     graph2out gen_g(filename);
     gen_g.write_graph(edges, n_vertices);

@@ -17,7 +17,7 @@ class data2graph {
  public:
   int get_n();
   vector<vector<int> > get_edges();
-  vector<string> get_node();
+  vector<string>* get_nodes();
   data2graph(string filename);
 };
 
