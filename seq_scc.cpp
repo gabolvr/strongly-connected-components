@@ -44,7 +44,7 @@ list<list<int> > explore(stack<int>* order, stack<int>* explored, bool* visited,
 }
 
 vector<vector<int> > read_edges(int n_vertices, istream& in) {
-  vector<vector<int> > neighbors(n_vertices);
+  vector<vector<int> > neighbors(n_vertices, vector<int>());
 
   int dest;
   string line;
@@ -59,7 +59,7 @@ vector<vector<int> > read_edges(int n_vertices, istream& in) {
 }
 
 vector<vector<int> > rev_edges(int n_vertices, vector<vector<int> > neighbors) {
-  vector<vector<int> > neighbors_rev(n_vertices);
+  vector<vector<int> > neighbors_rev(n_vertices, vector<int>());
   for (unsigned i = 0; i < n_vertices; ++i) {
     for (vector<int>::iterator j = neighbors[i].begin();
          j != neighbors[i].end(); ++j) {
