@@ -2,6 +2,7 @@
 #include <vector>
 #include <unordered_set>
 #include <string>
+#include <queue>
 #include <sstream>
 #include <fstream>
 #include "mpi.h"
@@ -45,6 +46,52 @@ vector<unordered_set<int> > generateEdgesIn(vector<unordered_set<int> >& graph_e
 	return graph_edges_in;
 }
 
+unordered_set<int> successors(vector<unordered_set<int> >& graph_edges_out, int start){
+	unordered_set<int> succ;
+	queue<int> toVisit;
+	int node;
+	
+	succ.insert(start);
+	toVisit.push(start);
+
+	while(!toVisit.empty()){
+		node = toVisit.front();
+		toVisit.pop();
+
+		for(unordered_set<int>::iterator it = graph_edges_out[node].begin(); it != graph_edges_out[node].end(); it++){
+			if (succ.count(*it) == 0){
+				succ.insert(*it);
+				toVisit.push(*it);
+			}
+		}
+	}
+
+	return succ;
+}
+
+unordered_set<int> predecessors(vector<unordered_set<int> >& graph_edges_in, int start){
+	unordered_set<int> pred;
+	queue<int> toVisit;
+	int node;
+	
+	pred.insert(start);
+	toVisit.push(start);
+
+	while(!toVisit.empty()){
+		node = toVisit.front();
+		toVisit.pop();
+
+		for(unordered_set<int>::iterator it = graph_edges_in[node].begin(); it != graph_edges_in[node].end(); it++){
+			if (pred.count(*it) == 0){
+				pred.insert(*it);
+				toVisit.push(*it);
+			}
+		}
+	}
+
+	return pred;
+}
+
 void DCSC(vector<int> vertices, vector<unordered_set<int> >& graph_edges_out, vector<unordered_set<int> >& graph_edges_in, vector<vector<int> >& scc){
 	if(vertices.size() == 0)
 		return;
@@ -73,6 +120,8 @@ void DCSC(vector<int> vertices, vector<unordered_set<int> >& graph_edges_out, ve
 		else
 			s4.push_back(vertices[i]);
 	}
+
+	scc.push_back(s1);
 
 	DCSC(s2, graph_edges_out, graph_edges_in, scc);
 	DCSC(s3, graph_edges_out, graph_edges_in, scc);
@@ -109,10 +158,15 @@ int main(int argc, char* argv[]){
 	vector<vector<int> > scc;
 
 	for(int i = 0; i < n_vertices; i++)
-		push_back(i);
+		vertices.push_back(i);
 
 	if(task_id == 0){
-
+		DCSC(vertices, graph_edges_out, graph_edges_in, scc);
+		for(int i = 0; i < scc.size(); i++){
+			for(int j = 0; j < scc[i].size(); j++)
+				cout << scc[i][j] << " ";
+			cout << endl;
+		}
 		/*cout << n_vertices << " n_vertices" << endl;
 		for(int i = 0; i < n_vertices; i++){
 			cout << i << " : ";
