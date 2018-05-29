@@ -321,6 +321,78 @@ void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, v
   	}
 }
 
+vector<int> trim(vector<int> vertices, vector<unordered_set<int> >& graph_edges_out, vector<unordered_set<int> >& graph_edges_in, vector<vector<int> >& scc){
+	queue<int> forward_trim, backward_trim;
+	unordered_set<int> toDelete;
+	int vertex;
+
+
+	// forward trim
+	for(int i = 0; i < vertices.size(); i++){
+		if(graph_edges_in[i].empty()){
+			forward_trim.push(i);
+			toDelete.insert(i);
+		}
+	}
+
+	while(!forward_trim.empty()){
+		vertex = forward_trim.front();
+		forward_trim.pop();
+		
+		// Add to SCC
+		scc.push_back(vector<int>());
+		scc[scc.size() - 1].push_back(vertex);
+		
+		// Delete out-edges
+		for(unordered_set<int>::iterator it = graph_edges_out[vertex].begin(); it != graph_edges_out[vertex].end(); it++){
+			graph_edges_in[*it].erase(vertex);
+			if(graph_edges_in[*it].empty()){
+				forward_trim.push(*it);
+				toDelete.insert(*it);
+			}
+		}
+		graph_edges_out[vertex].clear();
+	}
+
+	// backward trim
+
+	for(int i = 0; i < vertices.size(); i++){
+		if(graph_edges_out[i].empty() && toDelete.count(i) == 0){
+			backward_trim.push(i);
+			toDelete.insert(i);
+		}
+	}
+
+	while(!backward_trim.empty()){
+		vertex = backward_trim.front();
+		backward_trim.pop();
+		
+		// Add to SCC
+		scc.push_back(vector<int>());
+		scc[scc.size() - 1].push_back(vertex);
+		
+		// Delete out-edges
+		for(unordered_set<int>::iterator it = graph_edges_in[vertex].begin(); it != graph_edges_in[vertex].end(); it++){
+			graph_edges_out[*it].erase(vertex);
+			if(graph_edges_out[*it].empty()){
+				backward_trim.push(*it);
+				toDelete.insert(*it);
+			}
+		}
+		graph_edges_in[vertex].clear();
+	}
+
+	// update vectors
+
+	vector<int> new_vertices;
+	for(int i = 0; i < vertices.size(); i++){
+		if(toDelete.count(i) == 0)
+			new_vertices.push_back(i);
+	}
+
+	return new_vertices;
+}
+
 int main(int argc, char* argv[]){
 	int rc, task_id, num_tasks;
 
@@ -352,11 +424,15 @@ int main(int argc, char* argv[]){
 	for(int i = 0; i < n_vertices; i++)
 		vertices.push_back(i);
 
+	vertices = trim(vertices, graph_edges_out, graph_edges_in, scc);
+	cout << "trim done" << endl;
+
 	DCSC(&vertices, graph_edges_out, graph_edges_in, scc);
 	MPI_Barrier(MPI_COMM_WORLD);
 
 	if(task_id == 0){
 		cout << n_vertices << " vertices" << endl << endl;
+		cout << "Trim : " << vertices.size() << " vertices" << endl << endl;
 
 		cout << "Parallel" << endl;
 		int nv = 0;
