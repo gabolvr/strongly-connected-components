@@ -218,8 +218,11 @@ void DCSC(vector<int> vertices, vector<unordered_set<int> >& graph_edges_out, ve
 	  				if(free_task < num_tasks){
 	  					working_procs[free_task] = true;
 	  					MPI_Send(&vertices[0], n_vertices, MPI_INT, free_task, 1, MPI_COMM_WORLD);
+	  					cout << "proc " << task_id << " sends to proc " << free_task << " an array of size " << n_vertices << endl;
 	  				}
-	  				cout << "proc " << task_id << " sends to proc " << free_task << " an array of size " << n_vertices << endl;
+	  				else{
+	  					DCSC_Sequential(vertices, graph_edges_out, graph_edges_in, scc);
+	  				}
   				}
   			}
 
