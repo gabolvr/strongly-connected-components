@@ -19,6 +19,17 @@ vector<string>* data2graph::get_nodes() {
   return new vector<string>(this->complexId);
 }
 
+int data2graph::n_edges() {
+  int counter = 0;
+  for (std::vector<std::vector<int> >::iterator i = edges.begin();
+       i != edges.end(); ++i) {
+    for (std::vector<int>::iterator j = i->begin(); j != i->end(); ++j) {
+      counter++;
+    }
+  }
+  return counter;
+}
+
 data2graph::data2graph(string filename) {
   ifstream raw_data;
   raw_data.open(filename);
@@ -47,5 +58,6 @@ data2graph::data2graph(string filename) {
   }
 
   this->n_vertices = counter;
+
   raw_data.close();
 }

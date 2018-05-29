@@ -23,6 +23,8 @@ int main(int argc, char const *argv[]) {
   cout << "Writing graph in " << foutname << "..." << endl;
   g2o.write_graph(d2g.get_edges(), d2g.get_n());
   cout << "Graph successfully written. Job concluded" << endl;
+  cout << "Quick analysis:" << endl;
+  cout << "n_of_edges in the graph" << d2g.n_edges() << endl;
 
   return 0;
 }

@@ -15,6 +15,7 @@ class data2graph {
   vector<string> complexId;
 
  public:
+  int n_edges();
   int get_n();
   vector<vector<int> > get_edges();
   vector<string>* get_nodes();
