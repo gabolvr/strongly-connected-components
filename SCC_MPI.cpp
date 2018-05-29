@@ -368,7 +368,7 @@ int main(int argc, char* argv[]){
 				cout << scc[i][j] << " ";
 			cout << endl;
 		}
-		cluster_coef /= scc.size();
+		average_cluster_coef /= scc.size();
 		cout << endl << "Vertices : " << nv << endl << "SCC : " << scc.size() << endl;
 		cout << "Average clustering coefficient : " << average_cluster_coef << endl;
 
