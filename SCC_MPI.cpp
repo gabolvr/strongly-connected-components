@@ -202,8 +202,6 @@ void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, v
 
   	n_vertices_total = vertices->size();
   	n_vertices = n_vertices_total;
-  	if(n_vertices > 0)
-  		working = true;
 
   	tag = 1;
 
@@ -213,7 +211,10 @@ void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, v
   			working_procs[i] = false;
 
   		queue<vector<int>* > vertices_sets;
-  		vertices_sets.push(vertices);
+  		if(n_vertices > 0){
+  			working = true;
+  			vertices_sets.push(vertices);
+  		}
 
   		while(working){
 
