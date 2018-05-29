@@ -367,7 +367,7 @@ int main(int argc, char* argv[]){
 		}
 		cout << endl << "Vertices : " << nv << endl << "SCC : " << scc.size() << endl;
 
-		cout << endl << "Sequential" << endl;
+		/*cout << endl << "Sequential" << endl;
 		nv = 0;
 		DCSC_Sequential(vertices, graph_edges_out, graph_edges_in, scc_seq);
 		for(int i = 0; i < scc_seq.size(); i++){
