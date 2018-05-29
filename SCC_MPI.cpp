@@ -360,12 +360,17 @@ int main(int argc, char* argv[]){
 
 		cout << "Parallel" << endl;
 		int nv = 0;
+		float cluster_coef, average_cluster_coef = 0;
 		for(int i = 0; i < scc.size(); i++){
+			cluster_coef = (1.0 * scc[i].size()) / n_vertices ;
+			average_cluster_coef += cluster_coef;
 			for(int j = 0; j < scc[i].size(); j++, nv++)
 				cout << scc[i][j] << " ";
 			cout << endl;
 		}
+		cluster_coef /= scc.size();
 		cout << endl << "Vertices : " << nv << endl << "SCC : " << scc.size() << endl;
+		cout << "Average clustering coefficient : " << average_cluster_coef << endl;
 
 		/*cout << endl << "Sequential" << endl;
 		nv = 0;
