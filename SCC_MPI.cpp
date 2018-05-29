@@ -291,7 +291,7 @@ void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, v
   			}
   			else if(tag == 2){
   				scc.push_back(*vertices);
-  				cout << vertices->size() << " vetrices in SCC" << endl;
+  				//cout << vertices->size() << " vetrices in SCC" << endl;
   				/*scc.push_back(vector<int>());
   				for(int i = 0; i < n_vertices; i++)
   					scc[scc.size() - 1].push_back(vertices[i]);*/
@@ -347,7 +347,7 @@ int main(int argc, char* argv[]){
 	vector<unordered_set<int> > graph_edges_in = generateEdgesIn(graph_edges_out);
 
 	vector<int> vertices;
-	vector<vector<int> > scc;
+	vector<vector<int> > scc, scc_seq;
 
 	for(int i = 0; i < n_vertices; i++)
 		vertices.push_back(i);
@@ -356,12 +356,26 @@ int main(int argc, char* argv[]){
 	MPI_Barrier(MPI_COMM_WORLD);
 
 	if(task_id == 0){
-		//DCSC_Sequential(vertices, graph_edges_out, graph_edges_in, scc);
+		cout << n_vertices << " vertices" << endl << endl;
+
+		cout << "Parallel" << endl;
+		int nv = 0;
 		for(int i = 0; i < scc.size(); i++){
-			for(int j = 0; j < scc[i].size(); j++)
+			for(int j = 0; j < scc[i].size(); j++, nv++)
 				cout << scc[i][j] << " ";
 			cout << endl;
 		}
+		cout << endl << "Vertices : " << nv << endl << "SCC : " << scc.size() << endl;
+
+		cout << endl << "Sequential" << endl;
+		nv = 0;
+		DCSC_Sequential(vertices, graph_edges_out, graph_edges_in, scc_seq);
+		for(int i = 0; i < scc_seq.size(); i++){
+			for(int j = 0; j < scc_seq[i].size(); j++, nv++)
+				cout << scc_seq[i][j] << " ";
+			cout << endl;
+		}
+		cout << endl << "Vertices : " << nv << endl << "SCC : " << scc_seq.size() << endl;
 		/*cout << n_vertices << " n_vertices" << endl;
 		for(int i = 0; i < n_vertices; i++){
 			cout << i << " : ";
