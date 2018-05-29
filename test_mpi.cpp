@@ -20,7 +20,7 @@ int main(int argc, char* argv[]){
   		numbers = new int[10];
   		for(int i = 0; i < 10; i++)
   			numbers[i] = i;
-  		MPI_Send(numbers, 10, MPI_INT, 1, 42, MPI_COMM_WORLD);
+  		MPI_Send(NULL, 0, MPI_INT, 1, 42, MPI_COMM_WORLD);
   	}
   	else {
   		numbers = new int[20];
