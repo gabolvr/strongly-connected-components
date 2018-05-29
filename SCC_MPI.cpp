@@ -194,7 +194,7 @@ void DCSC_Rec(vector<int> vertices, int n_vertices, vector<unordered_set<int> >&
 
 void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, vector<unordered_set<int> >& graph_edges_in, vector<vector<int> >& scc){
 	int task_id, num_tasks, n_vertices, n_vertices_total, tag;
-	bool working = true, free_procs = true;
+	bool working, free_procs = true;
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &task_id);
   	MPI_Comm_size(MPI_COMM_WORLD, &num_tasks);
@@ -202,6 +202,9 @@ void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, v
 
   	n_vertices_total = vertices->size();
   	n_vertices = n_vertices_total;
+  	if(n_vertices > 0)
+  		working = true;
+
   	tag = 1;
 
   	if(task_id == 0){
@@ -425,15 +428,15 @@ int main(int argc, char* argv[]){
 		vertices.push_back(i);
 
 	vertices = trim(vertices, graph_edges_out, graph_edges_in, scc);
-	cout << "trim done" << endl;
+	if(task_id == 0){
+		cout << n_vertices << " vertices" << endl << endl;
+		cout << "Trim : " << vertices.size() << " vertices" << endl << endl;
+	}
 
 	DCSC(&vertices, graph_edges_out, graph_edges_in, scc);
 	MPI_Barrier(MPI_COMM_WORLD);
 
 	if(task_id == 0){
-		cout << n_vertices << " vertices" << endl << endl;
-		cout << "Trim : " << vertices.size() << " vertices" << endl << endl;
-
 		cout << "Parallel" << endl;
 		int nv = 0;
 		float cluster_coef, average_cluster_coef = 0;
