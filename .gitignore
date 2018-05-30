@@ -6,7 +6,7 @@
 # Extensions for testing
 *.rgraph
 *.dgraph
-
+*.scc
 # Prerequisites
 *.d
 
