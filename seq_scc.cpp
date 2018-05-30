@@ -36,12 +36,12 @@ vector<vector<int> > rev_edges(int n_vertices,
   return neighbors_rev;
 }
 
-void printSCC(const list<list<int> >& scc) {
+void printSCC(const list<list<int> >& scc, ofstream& fout) {
   for (std::list<list<int> >::const_iterator i = scc.begin(); i != scc.end();
        ++i) {
     for (std::list<int>::const_iterator j = i->begin(); j != i->end(); ++j)
-      cout << *j << " ";
-    cout << endl;
+      fout << *j << " ";
+    fout << endl;
   }
 }
 
@@ -95,15 +95,20 @@ list<list<int> > SCC(const vector<vector<int> >& neighbors) {
 }
 
 int main(int argc, char const* argv[]) {
+  string filename = argv[1];
+  ifstream fin(filename + ".rgraph");
+  ofstream fout(filename + ".scc");
   int n_vertices;
-  cin >> n_vertices;
-  cin.ignore();
+  fin >> n_vertices;
+  fin.ignore();
 
-  vector<vector<int> > neighbors = read_edges(n_vertices, cin);  // tested read
+  vector<vector<int> > neighbors = read_edges(n_vertices, fin);  // tested read
 
   list<list<int> > scc = SCC(neighbors);
 
-  printSCC(scc);
+  printSCC(scc, fout);
 
+  fout.close();
+  fin.close();
   return 0;
 }
