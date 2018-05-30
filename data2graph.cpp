@@ -8,7 +8,7 @@
 using namespace std;
 
 /*
-This module will read snap data and put them in our format
+  This module will read snap data to create a graph
 */
 
 int data2graph::get_n() { return n_vertices; }

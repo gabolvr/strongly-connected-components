@@ -1,11 +1,9 @@
 #include "graph2out.hpp"
-#include "translator.hpp"
 
 using namespace std;
 
 const string graph2out::EXTENSION = ".rgraph";
-// general function that picks a graph and writes it, in the format
-// "format_graph.txt", in the stream
+// utils to write a .rgraph file in the format specified by "format_graph.txt"
 void graph2out::write_graph(vector<vector<int> > edges, int n_vertices) {
   (*out_text) << n_vertices << endl;
   for (unsigned vert = 0; vert < n_vertices; ++vert) {

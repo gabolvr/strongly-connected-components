@@ -1,3 +1,0 @@
-- makefile for MPI
-- output graphs with nodes by name, not Id
-- parallel strongly-connected-components

@@ -6,7 +6,7 @@ SCC_MPI = SCC_MPI
 U2D = undirect_to_direct
 
 HFILES=$(wildcard *.hpp)
-OBJECTS = data2graph.o translator.o graph2out.o
+OBJECTS = data2graph.o graph2out.o
 
 CXX = mpic++ -std=c++11
 

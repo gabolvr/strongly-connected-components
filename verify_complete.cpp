@@ -2,11 +2,14 @@
 #include <map>
 #include <vector>
 
-using namespace std;
 /*
+Util for early debugging!
 We want to test if all nodes are in the scc, or if there is one node that
 appears twice
 */
+
+using namespace std;
+
 int main() {
   int n;
   map<int, bool> quant;
