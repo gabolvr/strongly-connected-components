@@ -203,7 +203,7 @@ void DCSC_Rec(vector<int> vertices, vector<unordered_set<int> >& graph_edges_out
 
 void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, vector<unordered_set<int> >& graph_edges_in, vector<vector<int> >& scc){
 	int task_id, num_tasks, n_vertices, n_vertices_total, tag;
-	bool working = false, free_procs = true;
+	bool working, free_procs = true;
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &task_id);
   	MPI_Comm_size(MPI_COMM_WORLD, &num_tasks);
