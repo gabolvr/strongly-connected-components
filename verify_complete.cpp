@@ -41,7 +41,7 @@ int main() {
     }
   }
   cout << endl;
-  if (missing.empty() && repeated.empty()) cout << "It seems Ok";
+  if (missing.empty() && repeated.empty()) cout << "It seems Ok" << endl;
 
   return 0;
 }
