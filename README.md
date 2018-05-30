@@ -26,17 +26,18 @@ Programming project for the course INF442 (*Traitement des données massives*) a
   First of all
   1. Dowload everything ;)
   2. On the terminal go to the directory and tap make
+  
   Options
   1. Generate ER graph:
-    a. Sequentially: run ./ER_graph_seq and follow instructions
-    b. Parallel: run it using mpi and giving it 3 arguments: n_vertices probability filename
-    Obs.: every filename you give shouldn't have extensions, we take care of that
+      * Sequentially: run ./ER_graph_seq and follow instructions
+      * Parallel: run it using mpi and giving it 3 arguments: n_vertices probability filename
+      * Obs.: every filename you give shouldn't have extensions, we take care of that
   2. Pre-treat data from SNAP:
-    a. Download it from: http://snap.stanford.edu/data/index.html
-    b. Put it in the directory AND change its extension to .dgraph
-    c. run ./dgraph2rgraph filename, where filename is the name of the file without extension
+      * Download it from: http://snap.stanford.edu/data/index.html
+      * Put it in the directory AND change its extension to .dgraph
+      * run ./dgraph2rgraph filename, where filename is the name of the file without extension
   3. Find Strongly Connected Components:
-    a. Sequentially: run ./seq_scc filename, attention there must exist a filename.rgraph
-    b. Parallel: run ./SCC_MPI "filename.rgraph", in this case we to write the .rgraph [TODO]
+      * Sequentially: run ./seq_scc filename, attention there must exist a filename.rgraph
+      * Parallel: run ./SCC_MPI "filename.rgraph", in this case we to write the .rgraph [TODO]
     
     
