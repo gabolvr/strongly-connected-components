@@ -1,5 +1,5 @@
 SQ_SCC = seq_scc
-TESTRW = test_read_write
+TESTRW = dgraph2rgraph
 ER_MPI = ER_graph_mpi
 ER_SEQ = ER_graph_seq
 SCC_MPI = SCC_MPI
