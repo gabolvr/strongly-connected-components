@@ -229,7 +229,11 @@ void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, v
   			vertices_sets.push(vertices);
   		}
 
+  		cout << "coucou" << n_vertices << " vertices" << endl;
+
   		while(working){
+
+  			cout << "coucou2" << endl;
 
   			// Send the set of vertices received to the first processor available
   			while(!vertices_sets.empty() && !available_task.empty()){
