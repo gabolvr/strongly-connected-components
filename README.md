@@ -39,5 +39,6 @@ Programming project for the course INF442 (*Traitement des données massives*) a
   3. Find Strongly Connected Components:
       * Sequentially: run ./seq_scc filename, attention there must exist a filename.rgraph
       * Parallel: run ./SCC_MPI "filename.rgraph", in this case we to write the .rgraph [TODO]
-    
+  4. Undirect to Direct:
+      * run ./undirect_to_direct filename, the result will be in a filename_treated.rgraph file
     
