@@ -8,11 +8,11 @@
 using namespace std;
 
 int main(int argc, char const *argv[]) {
-  string finname, foutname;
-  cout << "Where is the data?\n";
-  cin >> finname;
-  cout << "Where to write the data?\n";
-  cin >> foutname;
+  string finname, foutname, name = argv[1];
+  cout << "Name of the data set? (input extension .dgraph , output extension "
+          ".rgraph)\n";
+  finname = name + ".dgraph";
+  foutname = name;
   cout << "Opening file " << finname << "..." << endl
        << "and creating graph" << endl;
   data2graph d2g(finname);
