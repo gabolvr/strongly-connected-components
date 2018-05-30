@@ -25,7 +25,7 @@ vector<vector<int> > read_edges(int n_vertices, istream& in) {
 }
 
 vector<vector<int> > rev_edges(int n_vertices,
-                               vector<vector<int> >& neighbors) {
+                               const vector<vector<int> >& neighbors) {
   vector<vector<int> > neighbors_rev(n_vertices, vector<int>());
   for (unsigned i = 0; i < n_vertices; ++i) {
     for (vector<int>::const_iterator j = neighbors[i].begin();
@@ -36,9 +36,10 @@ vector<vector<int> > rev_edges(int n_vertices,
   return neighbors_rev;
 }
 
-void printSCC(list<list<int> >& scc) {
-  for (std::list<list<int> >::iterator i = scc.begin(); i != scc.end(); ++i) {
-    for (std::list<int>::iterator j = i->begin(); j != i->end(); ++j)
+void printSCC(const list<list<int> >& scc) {
+  for (std::list<list<int> >::const_iterator i = scc.begin(); i != scc.end();
+       ++i) {
+    for (std::list<int>::const_iterator j = i->begin(); j != i->end(); ++j)
       cout << *j << " ";
     cout << endl;
   }
@@ -47,11 +48,11 @@ void printSCC(list<list<int> >& scc) {
 // this returns the list of nodes reachable by dfs in the opposite order of
 // ending
 list<int> dfs(int current, vector<bool>& visited,
-              vector<vector<int> >& neighbors) {
+              const vector<vector<int> >& neighbors) {
   list<int> reached;
   visited[current] = true;
 
-  for (vector<int>::iterator i = neighbors[current].begin();
+  for (vector<int>::const_iterator i = neighbors[current].begin();
        i != neighbors[current].end(); ++i) {
     if (!visited[*i])
       reached.splice(reached.end(), dfs(*i, visited, neighbors));
@@ -62,7 +63,7 @@ list<int> dfs(int current, vector<bool>& visited,
 }
 
 // this will return the components of the graph
-list<list<int> > SCC(vector<vector<int> >& neighbors) {
+list<list<int> > SCC(const vector<vector<int> >& neighbors) {
   int n_vertices = neighbors.size();
   stack<int> explored;
   vector<bool> visited(n_vertices, false);
@@ -81,8 +82,6 @@ list<list<int> > SCC(vector<vector<int> >& neighbors) {
   list<list<int> > components;
   list<int>* reachable;
   int curr;
-  if (explored.size() != n_vertices)
-    cerr << "wtf, we have " << explored.size() << ", " << n_vertices << endl;
 
   while (!explored.empty()) {
     curr = explored.top();
