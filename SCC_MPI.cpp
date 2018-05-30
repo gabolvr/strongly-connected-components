@@ -203,7 +203,7 @@ void DCSC_Rec(vector<int> vertices, vector<unordered_set<int> >& graph_edges_out
 
 void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, vector<unordered_set<int> >& graph_edges_in, vector<vector<int> >& scc){
 	int task_id, num_tasks, n_vertices, n_vertices_total, tag;
-	bool working, free_procs = true;
+	bool working = false, free_procs = true;
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &task_id);
   	MPI_Comm_size(MPI_COMM_WORLD, &num_tasks);
@@ -225,17 +225,11 @@ void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, v
 
   		queue<vector<int>* > vertices_sets;
   		if(n_vertices > 0){
-  			cout << "mudei o working" << endl;
   			working = true;
   			vertices_sets.push(vertices);
   		}
 
-  		cout << "coucou " << n_vertices << " vertices" << endl;
-  		cout << working << endl;
-
   		while(working){
-
-  			cout << "coucou2" << endl;
 
   			// Send the set of vertices received to the first processor available
   			while(!vertices_sets.empty() && !available_task.empty()){
