@@ -36,6 +36,6 @@ $(TESTRW) : $(OBJECTS) $(TESTRW).o
 .PHONY: clean
 
 clean :
-	rm -f $(SQ_SCC) $(ER_MPI) $(TESTRW) $(ER_SEQ)
+	rm -f $(SQ_SCC) $(ER_MPI) $(TESTRW) $(ER_SEQ) $(SCC_MPI) $(U2D)
 	rm -f *.o *.out
 	./sanitize.sh
