@@ -24,7 +24,8 @@ int main(int argc, char const *argv[]) {
   g2o.write_graph(d2g.get_edges(), d2g.get_n());
   cout << "Graph successfully written. Job concluded" << endl;
   cout << "Quick analysis:" << endl;
-  cout << "n_of_edges in the graph" << d2g.n_edges() << endl;
+  cout << "Number of nodes in the graph: " << d2g.get_n() << endl;
+  cout << "n_of_edges in the graph: " << d2g.n_edges() << endl;
 
   return 0;
 }
