@@ -12,11 +12,11 @@ using namespace std;
 void explore_rec(int current, stack<int>* explored, bool* visited,
                  vector<vector<int> > neighbors, list<int>* reach) {
   visited[current] = true;
+  reach->push_front(current);
   for (vector<int>::iterator i = neighbors[current].begin();
        i != neighbors[current].end(); ++i) {
     if (!visited[*i]) {
       explore_rec(*i, explored, visited, neighbors, reach);
-      reach->push_front(*i);
     }
   }
 
@@ -36,7 +36,6 @@ list<list<int> > explore(stack<int>* order, stack<int>* explored, bool* visited,
     if (!visited[curr]) {
       reachable = new list<int>();
       explore_rec(curr, explored, visited, neighbors, reachable);
-      reachable->push_front(curr);
       components.push_front(*reachable);
     }
   }
@@ -71,8 +70,8 @@ vector<vector<int> > rev_edges(int n_vertices, vector<vector<int> > neighbors) {
 
 int main(int argc, char const* argv[]) {
   int n_vertices;
-  cin >> n_vertices >> std::ws;
-
+  cin >> n_vertices;
+  cin.ignore();
   vector<vector<int> > neighbors = read_edges(n_vertices, cin);
   vector<vector<int> > neighbors_rev = rev_edges(n_vertices, neighbors);
 
