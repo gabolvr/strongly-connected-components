@@ -8,40 +8,6 @@
 
 using namespace std;
 
-// in reach are the nodes reachable by dfs from this node
-void explore_rec(int current, stack<int>* explored, bool* visited,
-                 vector<vector<int> > neighbors, list<int>* reach) {
-  visited[current] = true;
-  reach->push_front(current);
-  for (vector<int>::iterator i = neighbors[current].begin();
-       i != neighbors[current].end(); ++i) {
-    if (!visited[*i]) {
-      explore_rec(*i, explored, visited, neighbors, reach);
-    }
-  }
-
-  explored->push(current);
-  return;
-}
-
-// this will return the components of the graph
-list<list<int> > explore(stack<int>* order, stack<int>* explored, bool* visited,
-                         vector<vector<int> > neighbors) {
-  list<list<int> > components;
-  list<int>* reachable;
-  int curr;
-  while (!order->empty()) {
-    curr = order->top();
-    order->pop();
-    if (!visited[curr]) {
-      reachable = new list<int>();
-      explore_rec(curr, explored, visited, neighbors, reachable);
-      components.push_front(*reachable);
-    }
-  }
-  return components;
-}
-
 vector<vector<int> > read_edges(int n_vertices, istream& in) {
   vector<vector<int> > neighbors(n_vertices, vector<int>());
 
@@ -68,36 +34,74 @@ vector<vector<int> > rev_edges(int n_vertices, vector<vector<int> > neighbors) {
   return neighbors_rev;
 }
 
+void printSCC(list<list<int> > scc) {
+  for (std::list<list<int> >::iterator i = scc.begin(); i != scc.end(); ++i) {
+    for (std::list<int>::iterator j = i->begin(); j != i->end(); ++j)
+      cout << *j << " ";
+    cout << endl;
+  }
+}
+
+// this returns the list of nodes reachable by dfs in the opposite order of
+// ending
+list<int> dfs(int current, bool* visited, vector<vector<int> > neighbors) {
+  list<int> reached;
+  visited[current] = true;
+
+  for (vector<int>::iterator i = neighbors[current].begin();
+       i != neighbors[current].end(); ++i) {
+    if (!visited[*i])
+      reached.splice(reached.begin(), dfs(*i, visited, neighbors));
+  }
+
+  reached.push_back(current);
+  return reached;
+}
+
+// this will return the components of the graph
+list<list<int> > SCC(vector<vector<int> > neighbors) {
+  int n_vertices = neighbors.size();
+  stack<int> explored;
+  bool* visited = new bool[n_vertices];
+  // dfs from each node
+  for (unsigned i = 0; i < n_vertices; ++i) {
+    if (!visited[i]) {
+      list<int> tmp = dfs(i, visited, neighbors);
+      for (std::list<int>::iterator i = tmp.begin(); i != tmp.end(); ++i)
+        explored.push(*i);
+    }
+  }
+
+  for (unsigned i = 0; i < n_vertices; ++i) {
+    if (!visited[i]) cout << "node not visited";
+    visited[i] = false;
+  }
+  vector<vector<int> > neighbors_rev = rev_edges(n_vertices, neighbors);
+  list<list<int> > components;
+  list<int>* reachable;
+  int curr;
+
+  while (!explored.empty()) {
+    curr = explored.top();
+    explored.pop();
+    if (!visited[curr]) {
+      components.push_front(dfs(curr, visited, neighbors));
+    }
+  }
+
+  return components;
+}
+
 int main(int argc, char const* argv[]) {
   int n_vertices;
   cin >> n_vertices;
   cin.ignore();
+
   vector<vector<int> > neighbors = read_edges(n_vertices, cin);
-  vector<vector<int> > neighbors_rev = rev_edges(n_vertices, neighbors);
 
-  stack<int> explored;
-  stack<int> order;
+  list<list<int> > scc = SCC(neighbors);
 
-  bool* visited = new bool[n_vertices];
-
-  for (unsigned i = 0; i < n_vertices; ++i) {
-    order.push(n_vertices - i - 1);
-  }
-
-  explore(&order, &explored, visited, neighbors);
-
-  for (unsigned i = 0; i < n_vertices; ++i) {
-    visited[i] = false;
-  }
-
-  list<list<int> > scc = explore(&explored, &order, visited, neighbors_rev);
-
-  for (std::list<list<int> >::iterator i = scc.begin(); i != scc.end(); ++i) {
-    for (std::list<int>::iterator j = i->begin(); j != i->end(); ++j) {
-      cout << *j << " ";
-    }
-    cout << endl;
-  }
+  printSCC(scc);
 
   return 0;
 }

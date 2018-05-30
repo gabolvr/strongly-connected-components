@@ -23,9 +23,7 @@ int data2graph::n_edges() {
   int counter = 0;
   for (std::vector<std::vector<int> >::iterator i = edges.begin();
        i != edges.end(); ++i) {
-    for (std::vector<int>::iterator j = i->begin(); j != i->end(); ++j) {
-      counter++;
-    }
+    counter += i->size();
   }
   return counter;
 }
