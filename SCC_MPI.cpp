@@ -185,17 +185,17 @@ void DCSC_Rec(vector<int> vertices, vector<unordered_set<int> >& graph_edges_out
 	
 	if(n_vertices == 0){
 		// Send message saying that the work is over
-		cout << "proc " << task_id << " ends DCSC" << endl;
+		//cout << "proc " << task_id << " ends DCSC" << endl;
 		MPI_Send(NULL, 0, MPI_INT, 0, 0, MPI_COMM_WORLD);
 		return;
 	}
 	
 	if(n_vertices == 1){
 		// Send the connected component to the root
-		cout << "proc " << task_id << " sends a vector of size " << n_vertices << " and tag " << 1 << endl;
+		//cout << "proc " << task_id << " sends a vector of size " << n_vertices << " and tag " << 1 << endl;
 		MPI_Send(&vertices[0], n_vertices, MPI_INT, 0, 2, MPI_COMM_WORLD);
 		// Send message saying that the work is over
-		cout << "proc " << task_id << " ends DCSC" << endl;
+		//cout << "proc " << task_id << " ends DCSC" << endl;
 		MPI_Send(NULL, 0, MPI_INT, 0, 0, MPI_COMM_WORLD);
 		return;
 	}
@@ -222,29 +222,29 @@ void DCSC_Rec(vector<int> vertices, vector<unordered_set<int> >& graph_edges_out
 			s4.push_back(vertices[i]);
 	}
 
-	cout << "proc " << task_id << " finds s1 " << s1.size() << " | s2 " << s2.size() << " | s3 " << s3.size() << " | s4 " << s4.size() << endl;
+	//cout << "proc " << task_id << " finds s1 " << s1.size() << " | s2 " << s2.size() << " | s3 " << s3.size() << " | s4 " << s4.size() << endl;
 
 	// Send the connected component to the root
-	cout << "proc " << task_id << " sends a vector s1 of size " << s1.size() << " and tag " << 2 << endl;
+	//cout << "proc " << task_id << " sends a vector s1 of size " << s1.size() << " and tag " << 2 << endl;
 	MPI_Send(&s1[0], s1.size(), MPI_INT, 0, 2, MPI_COMM_WORLD);
 
 	// Send the set of vertices to the root so that it allocates it to another processor
 	if(s2.size() > 1){
-		cout << "proc " << task_id << " sends a vector s2 of size " << s2.size() << " and tag " << 1 << endl;
+		//cout << "proc " << task_id << " sends a vector s2 of size " << s2.size() << " and tag " << 1 << endl;
 		MPI_Send(&s2[0], s2.size(), MPI_INT, 0, 1, MPI_COMM_WORLD);
 	}
 	else if(s2.size() == 1){
-		cout << "proc " << task_id << " sends a vector s2 of size " << s2.size() << " and tag " << 2 << endl;
+		//cout << "proc " << task_id << " sends a vector s2 of size " << s2.size() << " and tag " << 2 << endl;
 		MPI_Send(&s2[0], s2.size(), MPI_INT, 0, 2, MPI_COMM_WORLD);
 	}
 	
 	// Send the set of vertices to the root so that it allocates it to another processor
 	if(s3.size() > 1){
-		cout << "proc " << task_id << " sends a vector s3 of size " << s3.size() << " and tag " << 1 << endl;
+		//cout << "proc " << task_id << " sends a vector s3 of size " << s3.size() << " and tag " << 1 << endl;
 		MPI_Send(&s3[0], s3.size(), MPI_INT, 0, 1, MPI_COMM_WORLD);
 	}
 	else if(s3.size() == 1){
-		cout << "proc " << task_id << " sends a vector s3 of size " << s3.size() << " and tag " << 2 << endl;
+		//cout << "proc " << task_id << " sends a vector s3 of size " << s3.size() << " and tag " << 2 << endl;
 		MPI_Send(&s3[0], s3.size(), MPI_INT, 0, 2, MPI_COMM_WORLD);
 	}
 	
@@ -296,7 +296,7 @@ void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, v
   					available_task.pop();
 
   					working_procs[free_task] = true;
-  					cout << "proc " << task_id << " sends to proc " << free_task << " a vector of size " << n_vertices << endl;
+  					//cout << "proc " << task_id << " sends to proc " << free_task << " a vector of size " << n_vertices << endl;
   					MPI_Send(&(*vertices)[0], n_vertices, MPI_INT, free_task, 1, MPI_COMM_WORLD);
   					//delete vertices;
   					vertices_sets.pop();
@@ -317,7 +317,7 @@ void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, v
   			tag = status.MPI_TAG;
   			vertices = new vector<int>(n_vertices);
   			MPI_Recv(&(*vertices)[0], n_vertices, MPI_INT, status.MPI_SOURCE, tag, MPI_COMM_WORLD, &status);
-  			cout << "proc " << task_id << " received from proc " << status.MPI_SOURCE << " a vector of size " << n_vertices << " and tag " << tag << endl;
+  			//cout << "proc " << task_id << " received from proc " << status.MPI_SOURCE << " a vector of size " << n_vertices << " and tag " << tag << endl;
   			if(tag == 0){
   				working_procs[status.MPI_SOURCE] = false;
   				free_procs = true;
@@ -327,11 +327,11 @@ void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, v
   			}
   			else if(tag == 1){
   				vertices_sets.push(vertices);
-  				cout << "\tand adds it to the queue" << endl;
+  				//cout << "\tand adds it to the queue" << endl;
   			}
   			else if(tag == 2){
   				scc.push_back(*vertices);
-  				cout << "\tand adds it to the list of SCCs" << endl;
+  				//cout << "\tand adds it to the list of SCCs" << endl;
   			}
   		}
 
@@ -345,9 +345,9 @@ void DCSC(vector<int>* vertices, vector<unordered_set<int> >& graph_edges_out, v
   			vertices = new vector<int>(n_vertices);
   			MPI_Recv(&(*vertices)[0], n_vertices, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
   			tag = status.MPI_TAG;
-  			cout << "proc " << task_id << " receives from proc " << status.MPI_SOURCE << " a vector of size " << n_vertices << endl;
+  			//cout << "proc " << task_id << " receives from proc " << status.MPI_SOURCE << " a vector of size " << n_vertices << endl;
   			if(tag == 1){
-  				cout << "proc " << task_id << " starts DCSC" << endl;
+  				//cout << "proc " << task_id << " starts DCSC" << endl;
   				DCSC_Rec(*vertices, graph_edges_out, graph_edges_in);
   				delete vertices;
   			}
@@ -459,52 +459,23 @@ int main(int argc, char* argv[]){
 		vertices.push_back(i);
 
 	vertices = trim(vertices, graph_edges_out, graph_edges_in, scc);
-	if(task_id == 0){
+	/*if(task_id == 0){
 		cout << n_vertices << " vertices" << endl << endl;
 		cout << "Trim : " << vertices.size() << " vertices" << endl << endl;
-	}
+	}*/
 
+	// Function to manage the DCSC algorithm
 	DCSC(&vertices, graph_edges_out, graph_edges_in, scc);
 	MPI_Barrier(MPI_COMM_WORLD);
 
 	if(task_id == 0){
-		cout << "Parallel" << endl;
 		int nv = 0;
-		float cluster_coef, average_cluster_coef = 0;
 		for(int i = 0; i < scc.size(); i++){
-			cluster_coef = (1.0 * scc[i].size()) / n_vertices ;
-			average_cluster_coef += cluster_coef;
 			for(int j = 0; j < scc[i].size(); j++, nv++)
 				cout << scc[i][j] << " ";
 			cout << endl;
 		}
-		average_cluster_coef /= scc.size();
-		cout << endl << "Vertices : " << nv << endl << "SCC : " << scc.size() << endl;
-		cout << "Average clustering coefficient : " << average_cluster_coef << endl;
-
-		/*cout << endl << "Sequential" << endl;
-		nv = 0;
-		DCSC_Sequential(vertices, graph_edges_out, graph_edges_in, scc_seq);
-		for(int i = 0; i < scc_seq.size(); i++){
-			for(int j = 0; j < scc_seq[i].size(); j++, nv++)
-				cout << scc_seq[i][j] << " ";
-			cout << endl;
-		}
-		cout << endl << "Vertices : " << nv << endl << "SCC : " << scc_seq.size() << endl;
-		/*cout << n_vertices << " n_vertices" << endl;
-		for(int i = 0; i < n_vertices; i++){
-			cout << i << " : ";
-			for(unordered_set<int>::iterator it = graph_edges_out[i].begin(); it != graph_edges_out[i].end(); it++)
-				cout << *it << " ";
-			cout << endl;
-		}
-		cout << endl;
-		for(int i = 0; i < n_vertices; i++){
-			cout << i << " : ";
-			for(unordered_set<int>::iterator it = graph_edges_in[i].begin(); it != graph_edges_in[i].end(); it++)
-				cout << *it << " ";
-			cout << endl;
-		}*/
+		//cout << endl << "Vertices : " << nv << endl << "SCC : " << scc.size() << endl;
 	}
 
   	// Terminate MPI.
