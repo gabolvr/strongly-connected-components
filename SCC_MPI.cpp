@@ -464,9 +464,16 @@ int main(int argc, char* argv[]){
 		cout << "Trim : " << vertices.size() << " vertices" << endl << endl;
 	}*/
 
+	clock_t begin_time;
+	if (task_id == 0)
+		begin_time = clock();
+
 	// Function to manage the DCSC algorithm
 	DCSC(&vertices, graph_edges_out, graph_edges_in, scc);
 	MPI_Barrier(MPI_COMM_WORLD);
+
+	if (task_id == 0)
+		cout << float(clock () - begin_time) / CLOCKS_PER_SEC << " seconds" << endl;
 
 	if(task_id == 0){
 		int nv = 0;

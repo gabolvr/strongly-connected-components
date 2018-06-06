@@ -104,7 +104,11 @@ int main(int argc, char const* argv[]) {
 
   vector<vector<int> > neighbors = read_edges(n_vertices, fin);  // tested read
 
+  clock_t begin_time = clock();
+
   list<list<int> > scc = SCC(neighbors);
+
+  cout << float(clock () - begin_time) / CLOCKS_PER_SEC << " seconds" << endl;
 
   printSCC(scc, fout);
 
